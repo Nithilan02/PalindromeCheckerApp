@@ -2,14 +2,26 @@ import java.util.*;
 
 public class PalindromeCheckerApp {
 
-    // ---------- UC8: Linked List Node ----------
-    static class Node {
-        char data;
-        Node next;
+    // ---------- UC11: Palindrome Service Class ----------
+    static class PalindromeChecker {
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
+        public boolean checkPalindrome(String str) {
+
+            str = str.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+            Stack<Character> stack = new Stack<>();
+
+            for (char c : str.toCharArray()) {
+                stack.push(c);
+            }
+
+            String reversed = "";
+
+            while (!stack.isEmpty()) {
+                reversed += stack.pop();
+            }
+
+            return str.equals(reversed);
         }
     }
 
@@ -24,25 +36,22 @@ public class PalindromeCheckerApp {
         return reversed;
     }
 
-    // ---------- UC3: Basic Palindrome ----------
+    // ---------- UC3 ----------
     public static boolean isPalindromeBasic(String str) {
-        String reversed = reverseString(str);
-        return str.equals(reversed);
+        return str.equals(reverseString(str));
     }
 
-    // ---------- UC5: Case Insensitive ----------
+    // ---------- UC5 ----------
     public static boolean isPalindromeIgnoreCase(String str) {
-        str = str.toLowerCase();
-        return isPalindromeBasic(str);
+        return isPalindromeBasic(str.toLowerCase());
     }
 
-    // ---------- UC6: Ignore Spaces ----------
+    // ---------- UC6 ----------
     public static boolean isPalindromeIgnoreSpaces(String str) {
-        str = str.replace(" ", "").toLowerCase();
-        return isPalindromeBasic(str);
+        return isPalindromeBasic(str.replace(" ", "").toLowerCase());
     }
 
-    // ---------- UC7: Deque Based ----------
+    // ---------- UC7 ----------
     public static boolean isPalindromeDeque(String str) {
 
         Deque<Character> deque = new ArrayDeque<>();
@@ -52,15 +61,24 @@ public class PalindromeCheckerApp {
         }
 
         while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
+            if (deque.removeFirst() != deque.removeLast())
                 return false;
-            }
         }
 
         return true;
     }
 
-    // ---------- UC8: Linked List Based ----------
+    // ---------- UC8 ----------
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
     public static boolean isPalindromeLinkedList(String str) {
 
         Node head = new Node(str.charAt(0));
@@ -103,7 +121,7 @@ public class PalindromeCheckerApp {
         return true;
     }
 
-    // ---------- UC9: Recursive ----------
+    // ---------- UC9 ----------
     public static boolean isPalindromeRecursive(String str, int start, int end) {
 
         if (start >= end)
@@ -115,7 +133,7 @@ public class PalindromeCheckerApp {
         return isPalindromeRecursive(str, start + 1, end - 1);
     }
 
-    // ---------- UC10: Ignore Case & Spaces ----------
+    // ---------- UC10 ----------
     public static boolean isPalindromeNormalized(String str) {
 
         str = str.toLowerCase().replaceAll("[^a-z0-9]", "");
@@ -135,38 +153,28 @@ public class PalindromeCheckerApp {
         return true;
     }
 
-    // ---------- MAIN METHOD ----------
+    // ---------- MAIN ----------
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        // UC1
         System.out.println("Welcome to Palindrome Checker App");
 
         System.out.print("Enter a word or sentence: ");
         String input = sc.nextLine();
 
-        // UC3
         System.out.println("Basic Palindrome: " + isPalindromeBasic(input));
-
-        // UC5
-        System.out.println("Case Insensitive Palindrome: " + isPalindromeIgnoreCase(input));
-
-        // UC6
-        System.out.println("Ignore Spaces Palindrome: " + isPalindromeIgnoreSpaces(input));
-
-        // UC7
+        System.out.println("Case Insensitive: " + isPalindromeIgnoreCase(input));
+        System.out.println("Ignore Spaces: " + isPalindromeIgnoreSpaces(input));
         System.out.println("Deque Palindrome: " + isPalindromeDeque(input));
-
-        // UC8
         System.out.println("Linked List Palindrome: " + isPalindromeLinkedList(input));
-
-        // UC9
         System.out.println("Recursive Palindrome: " +
                 isPalindromeRecursive(input, 0, input.length() - 1));
-
-        // UC10
         System.out.println("Normalized Palindrome: " + isPalindromeNormalized(input));
+
+        // UC11 OOP service
+        PalindromeChecker checker = new PalindromeChecker();
+        System.out.println("OOP Service Palindrome: " + checker.checkPalindrome(input));
 
         sc.close();
     }
