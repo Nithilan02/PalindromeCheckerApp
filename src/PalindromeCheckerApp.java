@@ -1,38 +1,31 @@
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
+    public static boolean isPalindromeRecursive(String str, int start, int end) {
+
+        if (start >= end)
+            return true;
+
+        if (str.charAt(start) != str.charAt(end))
+            return false;
+
+        return isPalindromeRecursive(str, start + 1, end - 1);
+    }
+
     public static void main(String[] args) {
 
-        String input = "radar";
+        Scanner sc = new Scanner(System.in);
 
-        // Create Deque
-        Deque<Character> deque = new LinkedList<>();
+        System.out.println("Welcome to Palindrome Checker App");
 
-        // Insert characters into deque
-        for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
-        }
+        System.out.print("Enter a word: ");
+        String input = sc.nextLine();
 
-        boolean isPalindrome = true;
-
-        // Compare front and rear elements
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (front != rear) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Print result
-        if (isPalindrome) {
+        if (isPalindromeRecursive(input, 0, input.length() - 1)) {
             System.out.println(input + " is a Palindrome");
         } else {
-            System.out.println(input + " is Not a Palindrome");
+            System.out.println(input + " is NOT a Palindrome");
         }
     }
 }
