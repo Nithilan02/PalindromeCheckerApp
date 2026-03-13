@@ -2,7 +2,18 @@ import java.util.*;
 
 public class PalindromeCheckerApp {
 
-    // ---------- UC11: Palindrome Service Class ----------
+    // ---------- UC8 Linked List Node ----------
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // ---------- UC11 OOP Service ----------
     static class PalindromeChecker {
 
         public boolean checkPalindrome(String str) {
@@ -25,8 +36,57 @@ public class PalindromeCheckerApp {
         }
     }
 
-    // ---------- UC2 / UC4: Reverse String ----------
+    // ---------- UC12 Strategy Pattern ----------
+    interface PalindromeStrategy {
+        boolean check(String str);
+    }
+
+    static class StackStrategy implements PalindromeStrategy {
+
+        public boolean check(String str) {
+
+            str = str.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+            Stack<Character> stack = new Stack<>();
+
+            for (char c : str.toCharArray()) {
+                stack.push(c);
+            }
+
+            String reversed = "";
+
+            while (!stack.isEmpty()) {
+                reversed += stack.pop();
+            }
+
+            return str.equals(reversed);
+        }
+    }
+
+    static class DequeStrategy implements PalindromeStrategy {
+
+        public boolean check(String str) {
+
+            str = str.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+            Deque<Character> deque = new ArrayDeque<>();
+
+            for (char c : str.toCharArray()) {
+                deque.addLast(c);
+            }
+
+            while (deque.size() > 1) {
+                if (deque.removeFirst() != deque.removeLast())
+                    return false;
+            }
+
+            return true;
+        }
+    }
+
+    // ---------- UC2 / UC4 Reverse ----------
     public static String reverseString(String str) {
+
         String reversed = "";
 
         for (int i = str.length() - 1; i >= 0; i--) {
@@ -36,22 +96,22 @@ public class PalindromeCheckerApp {
         return reversed;
     }
 
-    // ---------- UC3 ----------
+    // ---------- UC3 Basic ----------
     public static boolean isPalindromeBasic(String str) {
         return str.equals(reverseString(str));
     }
 
-    // ---------- UC5 ----------
+    // ---------- UC5 Ignore Case ----------
     public static boolean isPalindromeIgnoreCase(String str) {
         return isPalindromeBasic(str.toLowerCase());
     }
 
-    // ---------- UC6 ----------
+    // ---------- UC6 Ignore Spaces ----------
     public static boolean isPalindromeIgnoreSpaces(String str) {
         return isPalindromeBasic(str.replace(" ", "").toLowerCase());
     }
 
-    // ---------- UC7 ----------
+    // ---------- UC7 Deque ----------
     public static boolean isPalindromeDeque(String str) {
 
         Deque<Character> deque = new ArrayDeque<>();
@@ -68,17 +128,7 @@ public class PalindromeCheckerApp {
         return true;
     }
 
-    // ---------- UC8 ----------
-    static class Node {
-        char data;
-        Node next;
-
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
+    // ---------- UC8 Linked List ----------
     public static boolean isPalindromeLinkedList(String str) {
 
         Node head = new Node(str.charAt(0));
@@ -111,6 +161,7 @@ public class PalindromeCheckerApp {
         Node second = prev;
 
         while (second != null) {
+
             if (first.data != second.data)
                 return false;
 
@@ -121,7 +172,7 @@ public class PalindromeCheckerApp {
         return true;
     }
 
-    // ---------- UC9 ----------
+    // ---------- UC9 Recursive ----------
     public static boolean isPalindromeRecursive(String str, int start, int end) {
 
         if (start >= end)
@@ -133,7 +184,7 @@ public class PalindromeCheckerApp {
         return isPalindromeRecursive(str, start + 1, end - 1);
     }
 
-    // ---------- UC10 ----------
+    // ---------- UC10 Normalized ----------
     public static boolean isPalindromeNormalized(String str) {
 
         str = str.toLowerCase().replaceAll("[^a-z0-9]", "");
@@ -163,18 +214,40 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a word or sentence: ");
         String input = sc.nextLine();
 
+        // UC3
         System.out.println("Basic Palindrome: " + isPalindromeBasic(input));
-        System.out.println("Case Insensitive: " + isPalindromeIgnoreCase(input));
+
+        // UC5
+        System.out.println("Ignore Case: " + isPalindromeIgnoreCase(input));
+
+        // UC6
         System.out.println("Ignore Spaces: " + isPalindromeIgnoreSpaces(input));
+
+        // UC7
         System.out.println("Deque Palindrome: " + isPalindromeDeque(input));
+
+        // UC8
         System.out.println("Linked List Palindrome: " + isPalindromeLinkedList(input));
+
+        // UC9
         System.out.println("Recursive Palindrome: " +
                 isPalindromeRecursive(input, 0, input.length() - 1));
+
+        // UC10
         System.out.println("Normalized Palindrome: " + isPalindromeNormalized(input));
 
-        // UC11 OOP service
+        // UC11 OOP
         PalindromeChecker checker = new PalindromeChecker();
         System.out.println("OOP Service Palindrome: " + checker.checkPalindrome(input));
+
+        // UC12 Strategy Pattern
+        PalindromeStrategy strategy;
+
+        strategy = new StackStrategy();
+        System.out.println("Strategy Stack Result: " + strategy.check(input));
+
+        strategy = new DequeStrategy();
+        System.out.println("Strategy Deque Result: " + strategy.check(input));
 
         sc.close();
     }
