@@ -204,39 +204,60 @@ public class PalindromeCheckerApp {
         return true;
     }
 
+    // ---------- UC13 Performance Comparison ----------
+    public static void comparePerformance(String input) {
+
+        long start, end;
+
+        System.out.println("\n--- Performance Comparison ---");
+
+        start = System.nanoTime();
+        isPalindromeBasic(input);
+        end = System.nanoTime();
+        System.out.println("Basic Method Time: " + (end - start) + " ns");
+
+        start = System.nanoTime();
+        isPalindromeDeque(input);
+        end = System.nanoTime();
+        System.out.println("Deque Method Time: " + (end - start) + " ns");
+
+        start = System.nanoTime();
+        isPalindromeLinkedList(input);
+        end = System.nanoTime();
+        System.out.println("Linked List Method Time: " + (end - start) + " ns");
+
+        start = System.nanoTime();
+        isPalindromeRecursive(input, 0, input.length() - 1);
+        end = System.nanoTime();
+        System.out.println("Recursive Method Time: " + (end - start) + " ns");
+
+        start = System.nanoTime();
+        isPalindromeNormalized(input);
+        end = System.nanoTime();
+        System.out.println("Normalized Method Time: " + (end - start) + " ns");
+    }
+
     // ---------- MAIN ----------
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
+        // UC1
         System.out.println("Welcome to Palindrome Checker App");
 
         System.out.print("Enter a word or sentence: ");
         String input = sc.nextLine();
 
-        // UC3
         System.out.println("Basic Palindrome: " + isPalindromeBasic(input));
-
-        // UC5
         System.out.println("Ignore Case: " + isPalindromeIgnoreCase(input));
-
-        // UC6
         System.out.println("Ignore Spaces: " + isPalindromeIgnoreSpaces(input));
-
-        // UC7
         System.out.println("Deque Palindrome: " + isPalindromeDeque(input));
-
-        // UC8
         System.out.println("Linked List Palindrome: " + isPalindromeLinkedList(input));
-
-        // UC9
         System.out.println("Recursive Palindrome: " +
                 isPalindromeRecursive(input, 0, input.length() - 1));
-
-        // UC10
         System.out.println("Normalized Palindrome: " + isPalindromeNormalized(input));
 
-        // UC11 OOP
+        // UC11 OOP Service
         PalindromeChecker checker = new PalindromeChecker();
         System.out.println("OOP Service Palindrome: " + checker.checkPalindrome(input));
 
@@ -248,6 +269,9 @@ public class PalindromeCheckerApp {
 
         strategy = new DequeStrategy();
         System.out.println("Strategy Deque Result: " + strategy.check(input));
+
+        // UC13 Performance Comparison
+        comparePerformance(input);
 
         sc.close();
     }
